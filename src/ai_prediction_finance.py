@@ -236,4 +236,76 @@ class AIPredictor:
         
         return pd.DataFrame(predictions)
     
+    def analyze_improvement_drivers(self, current_scores: Dict, target_grade: str) -> Dict:
+        """개선 동인 분석
+        
+        Args:
+            current_scores: 현재 ESG 점수
+            target_grade: 목표 등급
+        
+        Returns:
+            개선 동인 분석 결과
+        """
+        # 목표 점수 계산 (등급별 최소 점수)
+        grade_thresholds = {
+            "A+": 90, "A": 85, "A-": 80,
+            "B+": 75, "B": 70, "B-": 65,
+            "C": 60
+        }
+        
+        target_score = grade_thresholds.get(target_grade, 75)
+        current_total = current_scores['total']
+        gap = target_score - current_total
+        
+        if gap <= 0:
+            return {
+                'status': 'already_achieved',
+                'message': f'이미 {target_grade} 등급 달성 가능한 점수입니다.'
+            }
+        
+        # 각 영역별 개선 기회 분석
+        recommendations = []
+        total_cost = 0
+        total_time = 0
+        expected_improvement = 0
+        
+        # 영역별 가중치
+        weights = {'E': 0.35, 'S': 0.35, 'G': 0.3}
+        
+        for area in ['environmental', 'social', 'governance']:
+            area_key = area[0].upper()
+            current_area_score = current_scores[area_key]
+            
+            # 개선 여지가 큰 영역 우선
+            if current_area_score < 80:
+                for factor, details in self.improvement_factors[area].items():
+                    if expected_improvement < gap:
+                        impact = details['impact'] * weights[area_key]
+                        recommendations.append({
+                            'area': area,
+                            'factor': factor,
+                            'impact': impact,
+                            'cost': details['cost'],
+                            'time': details['time'],
+                            'priority': 'high' if current_area_score < 70 else 'medium'
+                        })
+                        total_cost += details['cost']
+                        total_time = max(total_time, details['time'])
+                        expected_improvement += impact
+        
+        # 우선순위 정렬
+        recommendations.sort(key=lambda x: x['impact'] / x['cost'], reverse=True)
+        
+        return {
+            'status': 'success',
+            'current_score': current_total,
+            'target_score': target_score,
+            'gap': gap,
+            'recommendations': recommendations[:5],  # 상위 5개 추천
+            'total_cost': total_cost,
+            'estimated_time': total_time,
+            'expected_improvement': expected_improvement,
+            'roi': (expected_improvement / total_cost * 100) if total_cost > 0 else 0
+        }
     
+   
