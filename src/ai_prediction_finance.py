@@ -308,4 +308,53 @@ class AIPredictor:
             'roi': (expected_improvement / total_cost * 100) if total_cost > 0 else 0
         }
     
-   
+    def calculate_financial_impact(self, score_improvement: float, loan_amount: float = 1000) -> Dict:
+        """ESG 개선의 금융적 영향 계산
+        
+        Args:
+            score_improvement: 점수 개선 폭
+            loan_amount: 대출 금액 (억원)
+        
+        Returns:
+            금융적 영향 분석
+        """
+        # 점수별 금리 우대율 (선형 보간)
+        def get_rate_discount(score):
+            if score >= 90:
+                return 2.7
+            elif score >= 85:
+                return 2.2
+            elif score >= 80:
+                return 1.8
+            elif score >= 75:
+                return 1.5
+            elif score >= 70:
+                return 1.2
+            elif score >= 65:
+                return 0.8
+            else:
+                return 0.4
+        
+        current_discount = get_rate_discount(score_improvement)
+        
+        # 연간 이자 절감액
+        annual_savings = loan_amount * current_discount / 100
+        
+        # 5년간 누적 절감액
+        cumulative_savings_5y = annual_savings * 5
+        
+        # ESG 투자 대비 수익률
+        # (일반적으로 ESG 개선 비용은 대출액의 0.5-2%)
+        estimated_esg_cost = loan_amount * 0.01  # 1% 가정
+        roi_5y = (cumulative_savings_5y / estimated_esg_cost - 1) * 100 if estimated_esg_cost > 0 else 0
+        
+        return {
+            'rate_discount': current_discount,
+            'annual_savings': annual_savings,
+            'cumulative_savings_5y': cumulative_savings_5y,
+            'estimated_esg_cost': estimated_esg_cost,
+            'roi_5y': roi_5y,
+            'payback_period': estimated_esg_cost / annual_savings if annual_savings > 0 else float('inf')
+        }
+    
+    
