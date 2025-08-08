@@ -100,4 +100,67 @@ class AIPredictor:
         
         return pd.DataFrame(data)
     
+    def train_prediction_model(self, historical_data: pd.DataFrame) -> Dict:
+        """예측 모델 학습
+        
+        Args:
+            historical_data: 과거 ESG 데이터
+        
+        Returns:
+            학습된 모델 정보
+        """
+        # 특성 엔지니어링
+        df = historical_data.copy()
+        df['month'] = df['date'].dt.month
+        df['quarter'] = df['date'].dt.quarter
+        df['trend'] = range(len(df))
+        
+        # 이동 평균 특성
+        for col in ['E', 'S', 'G']:
+            df[f'{col}_ma3'] = df[col].rolling(window=3, min_periods=1).mean()
+            df[f'{col}_ma6'] = df[col].rolling(window=6, min_periods=1).mean()
+        
+        # 변화율 특성
+        for col in ['E', 'S', 'G']:
+            df[f'{col}_change'] = df[col].pct_change().fillna(0)
+        
+        # 학습 데이터 준비
+        feature_cols = ['month', 'quarter', 'trend'] + \
+                      [f'{x}_ma3' for x in ['E', 'S', 'G']] + \
+                      [f'{x}_ma6' for x in ['E', 'S', 'G']] + \
+                      [f'{x}_change' for x in ['E', 'S', 'G']]
+        
+        X = df[feature_cols].fillna(0)
+        
+        # 각 ESG 영역별 모델 학습
+        for target in ['E', 'S', 'G', 'total']:
+            y = df[target]
+            
+            # Random Forest 모델 사용
+            model = RandomForestRegressor(
+                n_estimators=100,
+                max_depth=5,
+                random_state=42
+            )
+            
+            # 스케일링
+            scaler = StandardScaler()
+            X_scaled = scaler.fit_transform(X)
+            
+            # 모델 학습
+            model.fit(X_scaled, y)
+            
+            # 모델 저장
+            self.models[target] = model
+            self.scalers[target] = scaler
+            
+            # 특성 중요도 저장
+            self.feature_importance[target] = dict(zip(feature_cols, model.feature_importances_))
+        
+        return {
+            'status': 'success',
+            'models_trained': list(self.models.keys()),
+            'feature_count': len(feature_cols)
+        }
+    
     
