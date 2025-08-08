@@ -1,0 +1,208 @@
+{
+    "enterprises": {
+      "삼성전자": {
+        "basic_info": {
+          "name": "삼성전자",
+          "industry": "제조업",
+          "asset_size": 4500000,
+          "employee_count": 267937,
+          "established_year": 1969
+        },
+        "environmental": {
+          "carbon_scope1": 1200,
+          "carbon_scope2": 800,
+          "carbon_scope3": 15000,
+          "renewable_energy_ratio": 0.35,
+          "energy_usage_mwh": 25000,
+          "water_usage_ton": 150000,
+          "waste_recycling_rate": 0.95,
+          "env_certifications": ["ISO 14001", "ISO 50001"]
+        },
+        "social": {
+          "diversity_ratio": 0.28,
+          "accident_rate": 0.12,
+          "training_hours_per_employee": 52,
+          "customer_satisfaction": 87,
+          "supplier_assessment_ratio": 0.85,
+          "local_hiring_rate": 0.75,
+          "donation_ratio": 0.015
+        },
+        "governance": {
+          "independent_director_ratio": 0.6,
+          "board_diversity_ratio": 0.2,
+          "has_esg_committee": true,
+          "ethics_violations": 0,
+          "disclosure_score": 92,
+          "audit_opinion": "적정"
+        },
+        "financial": {
+          "revenue": 3020000,
+          "operating_profit": 440000,
+          "target_loan_amount": 5000
+        },
+        "compliance": {
+          "k_taxonomy_compliant": true,
+          "tcfd_compliant": true,
+          "gri_compliant": true
+        }
+      },
+      "SK하이닉스": {
+        "basic_info": {
+          "name": "SK하이닉스",
+          "industry": "제조업",
+          "asset_size": 2300000,
+          "employee_count": 31867,
+          "established_year": 1983
+        },
+        "environmental": {
+          "carbon_scope1": 980,
+          "carbon_scope2": 1200,
+          "carbon_scope3": 8000,
+          "renewable_energy_ratio": 0.42,
+          "energy_usage_mwh": 18000,
+          "water_usage_ton": 120000,
+          "waste_recycling_rate": 0.93,
+          "env_certifications": ["ISO 14001", "RE100"]
+        },
+        "social": {
+          "diversity_ratio": 0.25,
+          "accident_rate": 0.08,
+          "training_hours_per_employee": 64,
+          "customer_satisfaction": 89,
+          "supplier_assessment_ratio": 0.9,
+          "local_hiring_rate": 0.82,
+          "donation_ratio": 0.018
+        },
+        "governance": {
+          "independent_director_ratio": 0.57,
+          "board_diversity_ratio": 0.14,
+          "has_esg_committee": true,
+          "ethics_violations": 1,
+          "disclosure_score": 88,
+          "audit_opinion": "적정"
+        },
+        "financial": {
+          "revenue": 1440000,
+          "operating_profit": 290000,
+          "target_loan_amount": 3000
+        },
+        "compliance": {
+          "k_taxonomy_compliant": true,
+          "tcfd_compliant": false,
+          "gri_compliant": true
+        }
+      },
+      "KB금융그룹": {
+        "basic_info": {
+          "name": "KB금융그룹",
+          "industry": "금융업",
+          "asset_size": 6500000,
+          "employee_count": 26844,
+          "established_year": 2008
+        },
+        "environmental": {
+          "carbon_scope1": 50,
+          "carbon_scope2": 150,
+          "carbon_scope3": 2000,
+          "renewable_energy_ratio": 0.15,
+          "energy_usage_mwh": 800,
+          "water_usage_ton": 5000,
+          "green_finance_ratio": 0.42,
+          "env_certifications": ["ISO 14001"]
+        },
+        "social": {
+          "diversity_ratio": 0.45,
+          "accident_rate": 0.02,
+          "training_hours_per_employee": 80,
+          "customer_satisfaction": 91,
+          "financial_inclusion_score": 85,
+          "local_hiring_rate": 0.95,
+          "donation_ratio": 0.025
+        },
+        "governance": {
+          "independent_director_ratio": 0.71,
+          "board_diversity_ratio": 0.29,
+          "has_esg_committee": true,
+          "ethics_violations": 0,
+          "disclosure_score": 95,
+          "audit_opinion": "적정"
+        },
+        "financial": {
+          "revenue": 250000,
+          "operating_profit": 80000,
+          "target_loan_amount": 3000
+        },
+        "compliance": {
+          "k_taxonomy_compliant": false,
+          "tcfd_compliant": true,
+          "gri_compliant": true
+        }
+      },
+      "네이버": {
+        "basic_info": {
+          "name": "네이버",
+          "industry": "IT/서비스",
+          "asset_size": 150000,
+          "employee_count": 4886,
+          "established_year": 1999
+        },
+        "environmental": {
+          "carbon_scope1": 100,
+          "carbon_scope2": 300,
+          "carbon_scope3": 1500,
+          "renewable_energy_ratio": 0.25,
+          "energy_usage_mwh": 1200,
+          "water_usage_ton": 3000,
+          "data_center_pue": 1.2,
+          "env_certifications": ["ISO 14001", "그린데이터센터"]
+        },
+        "social": {
+          "diversity_ratio": 0.35,
+          "accident_rate": 0.01,
+          "training_hours_per_employee": 96,
+          "customer_satisfaction": 93,
+          "data_privacy_score": 95,
+          "local_hiring_rate": 0.88,
+          "donation_ratio": 0.022
+        },
+        "governance": {
+          "independent_director_ratio": 0.5,
+          "board_diversity_ratio": 0.17,
+          "has_esg_committee": false,
+          "ethics_violations": 0,
+          "disclosure_score": 85,
+          "audit_opinion": "적정"
+        },
+        "financial": {
+          "revenue": 90000,
+          "operating_profit": 20000,
+          "target_loan_amount": 2000
+        },
+        "compliance": {
+          "k_taxonomy_compliant": false,
+          "tcfd_compliant": false,
+          "gri_compliant": true
+        }
+      }
+    },
+    "industry_benchmarks": {
+      "제조업": {
+        "avg_carbon_intensity": 10000,
+        "avg_renewable_ratio": 0.3,
+        "avg_accident_rate": 0.15,
+        "avg_esg_score": 72
+      },
+      "금융업": {
+        "avg_carbon_intensity": 2200,
+        "avg_green_finance_ratio": 0.35,
+        "avg_diversity_ratio": 0.4,
+        "avg_esg_score": 75
+      },
+      "IT/서비스": {
+        "avg_carbon_intensity": 1900,
+        "avg_data_center_pue": 1.5,
+        "avg_diversity_ratio": 0.3,
+        "avg_esg_score": 70
+      }
+    }
+  }
