@@ -357,4 +357,102 @@ class AIPredictor:
             'payback_period': estimated_esg_cost / annual_savings if annual_savings > 0 else float('inf')
         }
     
+    def generate_scenario_analysis(self, current_scores: Dict, scenarios: List[Dict]) -> pd.DataFrame:
+        """시나리오별 영향 분석
+        
+        Args:
+            current_scores: 현재 ESG 점수
+            scenarios: 시나리오 리스트
+        
+        Returns:
+            시나리오 분석 결과
+        """
+        results = []
+        
+        for scenario in scenarios:
+            # 시나리오별 점수 변화 계산
+            new_scores = current_scores.copy()
+            
+            if 'improvements' in scenario:
+                for improvement in scenario['improvements']:
+                    area = improvement['area']
+                    impact = improvement['impact']
+                    new_scores[area] = min(100, new_scores[area] + impact)
+            
+            # 새로운 총점 계산
+            new_scores['total'] = (
+                new_scores['E'] * 0.35 +
+                new_scores['S'] * 0.35 +
+                new_scores['G'] * 0.3
+            )
+            
+            # 금융적 영향 계산
+            financial_impact = self.calculate_financial_impact(new_scores['total'])
+            
+            results.append({
+                'scenario': scenario['name'],
+                'new_score': new_scores['total'],
+                'score_change': new_scores['total'] - current_scores['total'],
+                'new_grade': self._score_to_grade(new_scores['total']),
+                'rate_discount': financial_impact['rate_discount'],
+                'annual_savings': financial_impact['annual_savings'],
+                'investment': scenario.get('investment', 0),
+                'roi': financial_impact['roi_5y']
+            })
+        
+        return pd.DataFrame(results)
     
+    def _score_to_grade(self, score: float) -> str:
+        """점수를 등급으로 변환"""
+        if score >= 90:
+            return "A+"
+        elif score >= 85:
+            return "A"
+        elif score >= 80:
+            return "A-"
+        elif score >= 75:
+            return "B+"
+        elif score >= 70:
+            return "B"
+        elif score >= 65:
+            return "B-"
+        else:
+            return "C"
+    
+    def get_prediction_confidence(self, predictions: pd.DataFrame) -> Dict:
+        """예측 신뢰도 계산
+        
+        Args:
+            predictions: 예측 결과
+        
+        Returns:
+            신뢰도 정보
+        """
+        # 예측 변동성 계산
+        volatility = {
+            'E': predictions['E'].std(),
+            'S': predictions['S'].std(),
+            'G': predictions['G'].std(),
+            'total': predictions['total'].std()
+        }
+        
+        # 신뢰 구간 계산 (95%)
+        confidence_intervals = {}
+        for col in ['E', 'S', 'G', 'total']:
+            mean = predictions[col].mean()
+            std = predictions[col].std()
+            confidence_intervals[col] = {
+                'lower': mean - 1.96 * std,
+                'upper': mean + 1.96 * std
+            }
+        
+        # 전체 신뢰도 점수 (0-100)
+        avg_volatility = np.mean(list(volatility.values()))
+        confidence_score = max(0, min(100, 100 - avg_volatility * 2))
+        
+        return {
+            'confidence_score': confidence_score,
+            'volatility': volatility,
+            'confidence_intervals': confidence_intervals,
+            'reliability': 'high' if confidence_score > 80 else 'medium' if confidence_score > 60 else 'low'
+        }
