@@ -163,4 +163,77 @@ class AIPredictor:
             'feature_count': len(feature_cols)
         }
     
+    def predict_future_scores(self, historical_data: pd.DataFrame, periods: int = 12) -> pd.DataFrame:
+        """미래 ESG 점수 예측
+        
+        Args:
+            historical_data: 과거 데이터
+            periods: 예측 기간 (월 단위)
+        
+        Returns:
+            예측 결과 데이터프레임
+        """
+        predictions = []
+        last_date = historical_data['date'].max()
+        
+        # 학습 시와 동일한 특성 컬럼 정의
+        feature_cols = ['month', 'quarter', 'trend'] + \
+                      [f'{x}_ma3' for x in ['E', 'S', 'G']] + \
+                      [f'{x}_ma6' for x in ['E', 'S', 'G']] + \
+                      [f'{x}_change' for x in ['E', 'S', 'G']]
+        
+        # 확장된 데이터프레임 생성
+        extended_df = historical_data.copy()
+        
+        for i in range(1, periods + 1):
+            pred_date = last_date + timedelta(days=30 * i)
+            
+            # 특성 생성
+            features = {
+                'month': pred_date.month,
+                'quarter': (pred_date.month - 1) // 3 + 1,
+                'trend': len(extended_df) + i
+            }
+            
+            # 이동 평균 계산
+            for col in ['E', 'S', 'G']:
+                recent_values = extended_df[col].tail(6).values
+                features[f'{col}_ma3'] = np.mean(recent_values[-3:]) if len(recent_values) >= 3 else recent_values[-1]
+                features[f'{col}_ma6'] = np.mean(recent_values) if len(recent_values) >= 6 else np.mean(recent_values)
+                
+                # 변화율
+                if len(recent_values) >= 2:
+                    features[f'{col}_change'] = (recent_values[-1] - recent_values[-2]) / recent_values[-2] if recent_values[-2] != 0 else 0
+                else:
+                    features[f'{col}_change'] = 0
+            
+            # 예측
+            pred_scores = {}
+            for target in ['E', 'S', 'G']:
+                if target in self.models:
+                    # 학습 시와 동일한 순서로 특성 생성
+                    X_pred = pd.DataFrame([features])[feature_cols]
+                    X_scaled = self.scalers[target].transform(X_pred)
+                    pred_scores[target] = max(0, min(100, self.models[target].predict(X_scaled)[0]))
+                else:
+                    pred_scores[target] = extended_df[target].iloc[-1]
+            
+            # 총점 계산
+            pred_scores['total'] = (
+                pred_scores['E'] * 0.35 +
+                pred_scores['S'] * 0.35 +
+                pred_scores['G'] * 0.3
+            )
+            
+            pred_scores['date'] = pred_date
+            predictions.append(pred_scores)
+            
+            # 예측값을 다음 예측의 입력으로 사용
+            extended_df = pd.concat([
+                extended_df,
+                pd.DataFrame([pred_scores])
+            ], ignore_index=True)
+        
+        return pd.DataFrame(predictions)
+    
     
