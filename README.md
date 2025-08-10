@@ -1,8 +1,19 @@
+# ShinhanESG Enterprise
+
 <img style="max-width:100%; height:auto;" src="https://private-user-images.githubusercontent.com/52368015/476365749-f8cb844b-3828-4ed1-aa68-19d4efd8a799.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTQ4NDAwNzgsIm5iZiI6MTc1NDgzOTc3OCwicGF0aCI6Ii81MjM2ODAxNS80NzYzNjU3NDktZjhjYjg0NGItMzgyOC00ZWQxLWFhNjgtMTlkNGVmZDhhNzk5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA4MTAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwODEwVDE1MjkzOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWVjMGZkNWIzYTkwNzA2OTQ0MmQ3NDZjYTRkMmZhOTgzZTUxZGRjMzU0OGFkZTk4OWIzOGU4OTNhM2I5ZWM5Y2YmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.enD7L3sVr2S6H2yNRdB86Mu5eZjKzDiquPFsJIL7IOM" />
 
 > 평가부터 금융상품 매칭까지 One-Stop 솔루션
 
 ![ESG Platform](https://img.shields.io/badge/ESG-Platform-blue) ![AI Powered](https://img.shields.io/badge/AI-Powered-green) ![Streamlit](https://img.shields.io/badge/Built_with-Streamlit-red)
+
+## Live Demo
+
+**애플리케이션 배포 완료!**
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://shinhan-esg-enterprise.streamlit.app/)
+
+> **Live Demo**: https://shinhan-esg-enterprise.streamlit.app/  
+> 실제 기업 데이터로 ESG 평가부터 AI 예측, 금융상품 매칭까지 전체 플로우를 체험할 수 있습니다.
 
 ## Quick Start
 
@@ -40,6 +51,7 @@ streamlit run src/presentation_report.py
 
 - [시스템 아키텍처](#-시스템-아키텍처)
 - [핵심 기능](#-핵심-기능)
+- [기술 학습 과정](#-기술-학습-과정)
 - [AI 모델링](#-ai-모델링)
 - [화면 구성](#-화면-구성)
 - [기술 스택](#-기술-스택)
@@ -183,27 +195,35 @@ def engineer_features(historical_data):
 - **R² Score**: 0.87 (E), 0.83 (S), 0.85 (G)
 - **예측 신뢰구간**: 95%
 
-## 화면 구성
+## 📱 화면 구성
 
 ### 메인 대시보드
-- ESG 종합 점수 게이지 차트
-- E-S-G 영역별 레이더 차트  
-- 업종 벤치마킹 비교
+<img src="https://private-user-images.githubusercontent.com/52368015/476371358-4fdcca93-db6e-4293-8adb-c44538ce68da.gif?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTQ4NDUwODQsIm5iZiI6MTc1NDg0NDc4NCwicGF0aCI6Ii81MjM2ODAxNS80NzYzNzEzNTgtNGZkY2NhOTMtZGI2ZS00MjkzLThhZGItYzQ0NTM4Y2U2OGRhLmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA4MTAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwODEwVDE2NTMwNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVjZDI0M2U4OTJhMGFlN2Y4Y2ZiMjBlNzlkMWNiNzYzNWI1NWYxNzk2NTA3ODIxZDM3ZjA4NGMxNDU2MDExZGQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.EOKe-OMFtG-zGUHy5Yq0KVteIiDJiZlBr_efpK_r_HI" alt="메인 대시보드" style="width: 100%; max-width: 800px;">
+
+- **ESG 종합 점수 게이지 차트**: 실시간 점수 업데이트
+- **E-S-G 영역별 레이더 차트**: 균형잡힌 ESG 성과 시각화
+- **업종 벤치마킹 비교**: 동종 업계 대비 상대적 위치
 
 ### AI 예측 분석
-- 1년/3년 예측 시계열 차트
-- 시나리오별 ROI 계산
-- 개선 우선순위 히트맵
+<img src="https://private-user-images.githubusercontent.com/52368015/476369757-53aec168-6b49-4b08-84f1-c4057b7d901d.gif?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTQ4NDUwODQsIm5iZiI6MTc1NDg0NDc4NCwicGF0aCI6Ii81MjM2ODAxNS80NzYzNjk3NTctNTNhZWMxNjgtNmI0OS00YjA4LTg0ZjEtYzQwNTdiN2Q5MDFkLmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA4MTAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwODEwVDE2NTMwNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWMyY2JlYjY0ZmUwZTYzODc3NDA3NjVjZjI1MjA4OTQ4M2U4NzVjZGEzNDBhNmI0OTkyOTdlMTY0NjBjOTRkZTYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.0lXN9Ielq_xmJAPJ9tN5hJ_rGZ7iPtjpOYBO02ap5NE" alt="AI 예측 분석" style="width: 100%; max-width: 800px;">
+
+- **1년/3년 예측 시계열 차트**: 신뢰구간을 포함한 미래 성과 예측
+- **시나리오별 ROI 계산**: 투자 대비 ESG 개선 효과 분석
+- **개선 우선순위 히트맵**: 가장 효율적인 개선 영역 추천
 
 ### 금융상품 매칭
-- 등급별 금리 우대 계산기
-- 상품 조건 매칭 현황
-- 5년 누적 혜택 시뮬레이션
+<img src="https://private-user-images.githubusercontent.com/52368015/476369767-377a5d3b-fd07-467b-a980-a8d2fa993c70.gif?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTQ4NDUwODQsIm5iZiI6MTc1NDg0NDc4NCwicGF0aCI6Ii81MjM2ODAxNS80NzYzNjk3NjctMzc3YTVkM2ItZmQwNy00NjdiLWE5ODAtYThkMmZhOTkzYzcwLmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA4MTAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwODEwVDE2NTMwNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTRlMmRjM2FlZDJmNzAzYTE5OGE2NjMyM2I3OWFiYzc2ZTA3M2ExOTZjNWQyNDE3YzUyYjI0ZWVhZjE4YjgwMzcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.bk1CButSXIrUz-m7suMGtT-L1xDcWPVQjiugQ23bRbg" alt="금융상품 매칭" style="width: 100%; max-width: 800px;">
+
+- **등급별 금리 우대 계산기**: ESG 등급에 따른 실시간 금리 혜택 계산
+- **상품 조건 매칭 현황**: 6개 ESG 연계 금융상품 자동 매칭
+- **5년 누적 혜택 시뮬레이션**: 장기 금융 혜택 예측
 
 ### 프레젠테이션 모드
-- 10페이지 자동 슬라이드 생성
-- 경영진 보고용 요약 대시보드
-- PDF/Excel 다운로드
+<img src="https://private-user-images.githubusercontent.com/52368015/476370022-98df46f2-9c99-4ac9-b583-8f67bd9d1639.gif?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTQ4NDUwODQsIm5iZiI6MTc1NDg0NDc4NCwicGF0aCI6Ii81MjM2ODAxNS80NzYzNzAwMjItOThkZjQ2ZjItOWM5OS00YWM5LWI1ODMtOGY2N2JkOWQxNjM5LmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA4MTAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwODEwVDE2NTMwNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWFjNDA4NjQ3Y2ZiMzViMDI5ZTg3ZTcyZTYxNjQ0ZTgzMzgxZGFmM2Y2OWVmYjkzNjY0YjkxMTlkZTE5ZTJhMGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.II6pTUdqdT7WIb4PtkehIbcHqzoY9Vooi-KfIxH7Lnw" alt="프레젠테이션 모드" style="width: 100%; max-width: 800px;">
+
+- **10페이지 자동 슬라이드 생성**: ESG 평가 결과를 경영진 보고용으로 변환
+- **실시간 발표 모드**: 클릭 네비게이션으로 프레젠테이션 진행
+- **PDF/Excel 다운로드**: 보고서 및 데이터 즉시 내보내기
 
 ## 기술 스택
 
@@ -216,6 +236,10 @@ def engineer_features(historical_data):
 | **Visualization** | Plotly | 5.18.0 | 인터랙티브 차트 |
 | **Export** | openpyxl | 3.1.2 | Excel 리포트 |
 
+### 학습 방법
+- 유튜브 강의로 실전 활용 패턴과 키워드 위주 공부
+- 키워드 검색으로 공식문서나 생성형 AI를 통한 정확한 개념 이해
+
 ### 핵심 의존성
 ```txt
 streamlit==1.31.1      # 웹 애플리케이션 프레임워크
@@ -224,7 +248,6 @@ scikit-learn==1.4.0    # 머신러닝 모델
 plotly==5.18.0         # 인터랙티브 시각화
 numpy==1.26.3          # 수치 계산
 openpyxl==3.1.2        # Excel 파일 처리
-```
 
 ## API 문서
 
