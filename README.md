@@ -1,6 +1,6 @@
-# ShinhanESG Enterprise
+<img style="max-width:100%; height:auto;" src="https://private-user-images.githubusercontent.com/52368015/476365749-f8cb844b-3828-4ed1-aa68-19d4efd8a799.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTQ4NDAwNzgsIm5iZiI6MTc1NDgzOTc3OCwicGF0aCI6Ii81MjM2ODAxNS80NzYzNjU3NDktZjhjYjg0NGItMzgyOC00ZWQxLWFhNjgtMTlkNGVmZDhhNzk5LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA4MTAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwODEwVDE1MjkzOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWVjMGZkNWIzYTkwNzA2OTQ0MmQ3NDZjYTRkMmZhOTgzZTUxZGRjMzU0OGFkZTk4OWIzOGU4OTNhM2I5ZWM5Y2YmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.enD7L3sVr2S6H2yNRdB86Mu5eZjKzDiquPFsJIL7IOM" />
 
-AI 기반 ESG 통합관리 플랫폼 - 평가부터 금융상품 매칭까지 One-Stop 솔루션
+> 평가부터 금융상품 매칭까지 One-Stop 솔루션
 
 ![ESG Platform](https://img.shields.io/badge/ESG-Platform-blue) ![AI Powered](https://img.shields.io/badge/AI-Powered-green) ![Streamlit](https://img.shields.io/badge/Built_with-Streamlit-red)
 
