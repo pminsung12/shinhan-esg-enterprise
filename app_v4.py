@@ -1160,7 +1160,7 @@ def display_modern_footer():
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             <div>
                 <strong style="color: #0046FF;">ShinhanESG Enterprise</strong>
-                <span style="color: #666; margin-left: 1rem;">© 2024 Shinhan Bank</span>
+                <span style="color: #666; margin-left: 1rem;">© 2025 Shinhan Bank</span>
             </div>
             <div style="display: flex; gap: 2rem; color: #666; font-size: 0.9rem;">
                 <span>esg@shinhan.com</span>
