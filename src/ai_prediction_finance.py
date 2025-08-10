@@ -54,41 +54,253 @@ class AIPredictor:
             }
         }
     
-    def generate_historical_data(self, current_scores: Dict, periods: int = 24) -> pd.DataFrame:
+    def generate_historical_data(self, current_scores: Dict, periods: int = 24, company_name: str = None) -> pd.DataFrame:
         """과거 데이터 시뮬레이션 생성
         
         Args:
             current_scores: 현재 ESG 점수
             periods: 생성할 과거 기간 수 (월 단위)
+            company_name: 기업명 (패턴 다양화용)
         
         Returns:
             시계열 데이터프레임
         """
         dates = pd.date_range(end=datetime.now(), periods=periods, freq='M')
         
-        # 트렌드와 계절성을 포함한 시뮬레이션
-        np.random.seed(42)
+        # 기업별 다양한 패턴 정의 - 현재 성과 수준에 맞춰 조정
+        company_patterns = {
+            "삼성전자": {
+                "trend_type": "steady_growth",  # 우수 기업의 안정적 성장
+                "e_trend": 0.2, "s_trend": 0.15, "g_trend": 0.1,
+                "volatility": 0.008, "seasonal_strength": 0.02,
+                "shock_points": [],  # 안정적 운영
+                "recovery_speed": 0.95
+            },
+            "SK하이닉스": {
+                "trend_type": "declining_then_recovery",  # 저성과에서 회복 시도
+                "e_trend": -0.3, "s_trend": -0.2, "g_trend": -0.1,
+                "volatility": 0.035, "seasonal_strength": 0.06,
+                "recovery_point": 12,
+                "recovery_speed": 0.5
+            },
+            "KB금융그룹": {
+                "trend_type": "rapid_improvement",  # 중상위 기업의 급속 개선
+                "e_trend": 0.4, "s_trend": 0.3, "g_trend": 0.35,
+                "volatility": 0.012, "seasonal_strength": 0.025,
+                "acceleration_point": 8,
+                "recovery_speed": 0.85
+            },
+            "신한금융그룹": {
+                "trend_type": "plateau",
+                "e_trend": 0.2, "s_trend": 0.2, "g_trend": 0.3,
+                "volatility": 0.008, "seasonal_strength": 0.02,
+                "plateau_start": 12,
+                "recovery_speed": 0.95
+            },
+            "국민은행": {
+                "trend_type": "volatile_growth",
+                "e_trend": 0.35, "s_trend": 0.45, "g_trend": 0.25,
+                "volatility": 0.03, "seasonal_strength": 0.06,
+                "shock_frequency": 3,
+                "recovery_speed": 0.5
+            },
+            "LG화학": {
+                "trend_type": "s_curve",
+                "e_trend": 0.7, "s_trend": 0.3, "g_trend": 0.2,
+                "volatility": 0.02, "seasonal_strength": 0.04,
+                "inflection_point": 12,
+                "recovery_speed": 0.7
+            },
+            "현대자동차": {
+                "trend_type": "stepwise",
+                "e_trend": 0.3, "s_trend": 0.4, "g_trend": 0.35,
+                "volatility": 0.012, "seasonal_strength": 0.03,
+                "step_points": [6, 12, 18],
+                "recovery_speed": 0.85
+            },
+            "포스코": {
+                "trend_type": "declining_then_recovery",
+                "e_trend": -0.2, "s_trend": 0.1, "g_trend": 0.15,
+                "volatility": 0.018, "seasonal_strength": 0.04,
+                "recovery_point": 14,
+                "recovery_speed": 0.6
+            },
+            "네이버": {
+                "trend_type": "volatile_growth",  # 중간 성과에서 변동성 있는 성장
+                "e_trend": 0.25, "s_trend": 0.2, "g_trend": 0.3,
+                "volatility": 0.025, "seasonal_strength": 0.04,
+                "shock_frequency": 4,
+                "recovery_speed": 0.7
+            },
+            "한화그룹": {
+                "trend_type": "irregular",
+                "e_trend": 0.25, "s_trend": 0.35, "g_trend": 0.3,
+                "volatility": 0.04, "seasonal_strength": 0.07,
+                "randomness": 0.5,
+                "recovery_speed": 0.4
+            }
+        }
+        
+        # 기본 패턴 (기업명이 없거나 정의되지 않은 경우)
+        default_pattern = {
+            "trend_type": "steady_growth",
+            "e_trend": 0.3, "s_trend": 0.3, "g_trend": 0.3,
+            "volatility": 0.02, "seasonal_strength": 0.04,
+            "recovery_speed": 0.7
+        }
+        
+        # 기업별 패턴 선택
+        pattern = company_patterns.get(company_name, default_pattern)
+        
+        # 랜덤 시드를 기업명 기반으로 설정 (일관성 유지하면서 다양성 확보)
+        if company_name:
+            np.random.seed(hash(company_name) % 2**32)
+        else:
+            np.random.seed(42)
         
         data = []
+        
+        # 초기 점수 설정 (현재 점수 기준으로 과거로 갈수록 낮게 설정)
+        # 개선: 현재 점수에서 합리적인 범위 내에서 시작
+        initial_reduction = 0.7 + np.random.uniform(0, 0.15)  # 70-85% 수준에서 시작
+        e_score = current_scores['E'] * initial_reduction
+        s_score = current_scores['S'] * initial_reduction
+        g_score = current_scores['G'] * initial_reduction
+        
         for i, date in enumerate(dates):
-            # 기본 트렌드 (점진적 개선)
-            trend_factor = i / periods
+            progress = i / periods
             
-            # 계절성 (분기별 변동)
-            seasonal_factor = np.sin(2 * np.pi * i / 4) * 0.05
+            # 트렌드 타입별 처리
+            if pattern["trend_type"] == "steady_growth":
+                e_trend = pattern["e_trend"] * progress
+                s_trend = pattern["s_trend"] * progress
+                g_trend = pattern["g_trend"] * progress
+                
+            elif pattern["trend_type"] == "cyclical":
+                cycle = np.sin(2 * np.pi * i / pattern.get("cycle_period", 8))
+                e_trend = pattern["e_trend"] * progress + 0.1 * cycle
+                s_trend = pattern["s_trend"] * progress + 0.08 * cycle
+                g_trend = pattern["g_trend"] * progress + 0.05 * cycle
+                
+            elif pattern["trend_type"] == "rapid_improvement":
+                if i > pattern.get("acceleration_point", 10):
+                    acceleration = (i - pattern["acceleration_point"]) / periods
+                    e_trend = pattern["e_trend"] * progress * (1 + acceleration)
+                    s_trend = pattern["s_trend"] * progress * (1 + acceleration * 0.8)
+                    g_trend = pattern["g_trend"] * progress * (1 + acceleration * 0.6)
+                else:
+                    e_trend = pattern["e_trend"] * progress * 0.3
+                    s_trend = pattern["s_trend"] * progress * 0.3
+                    g_trend = pattern["g_trend"] * progress * 0.3
+                    
+            elif pattern["trend_type"] == "plateau":
+                if i < pattern.get("plateau_start", 12):
+                    e_trend = pattern["e_trend"] * progress * 2
+                    s_trend = pattern["s_trend"] * progress * 2
+                    g_trend = pattern["g_trend"] * progress * 2
+                else:
+                    e_trend = pattern["e_trend"] * 0.5
+                    s_trend = pattern["s_trend"] * 0.5
+                    g_trend = pattern["g_trend"] * 0.5
+                    
+            elif pattern["trend_type"] == "volatile_growth":
+                shock = 0
+                if i % (periods // pattern.get("shock_frequency", 3)) == 0:
+                    shock = np.random.uniform(-0.2, 0.2)
+                e_trend = pattern["e_trend"] * progress + shock
+                s_trend = pattern["s_trend"] * progress + shock * 0.8
+                g_trend = pattern["g_trend"] * progress + shock * 0.6
+                
+            elif pattern["trend_type"] == "s_curve":
+                x = (i - pattern.get("inflection_point", 12)) / 6
+                sigmoid = 1 / (1 + np.exp(-x))
+                e_trend = pattern["e_trend"] * sigmoid
+                s_trend = pattern["s_trend"] * sigmoid
+                g_trend = pattern["g_trend"] * sigmoid
+                
+            elif pattern["trend_type"] == "stepwise":
+                step_value = 0
+                for step_point in pattern.get("step_points", [6, 12, 18]):
+                    if i >= step_point:
+                        step_value += 0.2
+                e_trend = pattern["e_trend"] * step_value
+                s_trend = pattern["s_trend"] * step_value
+                g_trend = pattern["g_trend"] * step_value
+                
+            elif pattern["trend_type"] == "declining_then_recovery":
+                if i < pattern.get("recovery_point", 14):
+                    e_trend = pattern["e_trend"] * (1 - progress * 0.5)
+                    s_trend = pattern["s_trend"] * (1 - progress * 0.3)
+                    g_trend = pattern["g_trend"] * (1 - progress * 0.2)
+                else:
+                    recovery_progress = (i - pattern["recovery_point"]) / (periods - pattern["recovery_point"])
+                    e_trend = pattern["e_trend"] + 0.8 * recovery_progress
+                    s_trend = pattern["s_trend"] + 0.6 * recovery_progress
+                    g_trend = pattern["g_trend"] + 0.5 * recovery_progress
+                    
+            elif pattern["trend_type"] == "exponential":
+                growth_rate = pattern.get("growth_rate", 0.1)
+                e_trend = pattern["e_trend"] * (np.exp(growth_rate * progress) - 1)
+                s_trend = pattern["s_trend"] * (np.exp(growth_rate * progress * 0.8) - 1)
+                g_trend = pattern["g_trend"] * (np.exp(growth_rate * progress * 0.6) - 1)
+                
+            else:  # irregular
+                e_trend = pattern["e_trend"] * progress + np.random.uniform(-0.1, 0.1)
+                s_trend = pattern["s_trend"] * progress + np.random.uniform(-0.08, 0.08)
+                g_trend = pattern["g_trend"] * progress + np.random.uniform(-0.06, 0.06)
             
-            # 랜덤 노이즈
-            noise = np.random.normal(0, 0.02)
+            # 계절성 추가
+            seasonal_e = np.sin(2 * np.pi * i / 4) * pattern["seasonal_strength"]
+            seasonal_s = np.sin(2 * np.pi * i / 4 + np.pi/3) * pattern["seasonal_strength"] * 0.8
+            seasonal_g = np.sin(2 * np.pi * i / 4 + 2*np.pi/3) * pattern["seasonal_strength"] * 0.6
             
-            # 각 영역별 점수 생성
-            e_score = current_scores['E'] * (0.7 + 0.3 * trend_factor) + seasonal_factor * 10 + noise * 5
-            s_score = current_scores['S'] * (0.75 + 0.25 * trend_factor) + seasonal_factor * 8 + noise * 4
-            g_score = current_scores['G'] * (0.8 + 0.2 * trend_factor) + seasonal_factor * 5 + noise * 3
+            # 노이즈 추가
+            noise_e = np.random.normal(0, pattern["volatility"])
+            noise_s = np.random.normal(0, pattern["volatility"] * 0.8)
+            noise_g = np.random.normal(0, pattern["volatility"] * 0.6)
+            
+            # 점수 계산 - 현재 점수를 향해 점진적으로 증가
+            # 목표: 마지막 기간에 현재 점수에 근접하도록
+            target_progress = (i + 1) / periods
+            
+            # 현재 점수를 향한 수렴
+            e_target = current_scores['E']
+            s_target = current_scores['S']
+            g_target = current_scores['G']
+            
+            # 부드러운 수렴을 위한 가중치
+            convergence_weight = target_progress ** 1.5
+            
+            # 트렌드, 계절성, 노이즈를 포함한 점수 계산
+            e_score = e_score + (e_target - e_score) * convergence_weight * 0.1 + e_trend + seasonal_e * 2 + noise_e * 3
+            s_score = s_score + (s_target - s_score) * convergence_weight * 0.1 + s_trend + seasonal_s * 2 + noise_s * 3
+            g_score = g_score + (g_target - g_score) * convergence_weight * 0.1 + g_trend + seasonal_g * 2 + noise_g * 3
+            
+            # 충격 포인트 처리
+            if pattern["trend_type"] == "steady_growth" and i in pattern.get("shock_points", []):
+                shock_impact = np.random.uniform(-15, -5)
+                e_score += shock_impact
+                s_score += shock_impact * 0.7
+                g_score += shock_impact * 0.5
+            
+            # 회복 속도 적용
+            if i > 0:
+                recovery = pattern["recovery_speed"]
+                e_score = e_score * recovery + data[-1]['E'] * (1 - recovery)
+                s_score = s_score * recovery + data[-1]['S'] * (1 - recovery)
+                g_score = g_score * recovery + data[-1]['G'] * (1 - recovery)
             
             # 경계값 처리
             e_score = max(0, min(100, e_score))
             s_score = max(0, min(100, s_score))
             g_score = max(0, min(100, g_score))
+            
+            # 마지막 몇 개월은 현재 점수에 더 가깝게 조정
+            if i >= periods - 3:
+                final_weight = 0.7 + 0.1 * (i - (periods - 3))
+                e_score = e_score * (1 - final_weight) + current_scores['E'] * final_weight
+                s_score = s_score * (1 - final_weight) + current_scores['S'] * final_weight
+                g_score = g_score * (1 - final_weight) + current_scores['G'] * final_weight
             
             data.append({
                 'date': date,
@@ -163,18 +375,35 @@ class AIPredictor:
             'feature_count': len(feature_cols)
         }
     
-    def predict_future_scores(self, historical_data: pd.DataFrame, periods: int = 12) -> pd.DataFrame:
+    def predict_future_scores(self, historical_data: pd.DataFrame, periods: int = 12, company_name: str = None) -> pd.DataFrame:
         """미래 ESG 점수 예측
         
         Args:
             historical_data: 과거 데이터
             periods: 예측 기간 (월 단위)
+            company_name: 기업명 (예측 다양성용)
         
         Returns:
             예측 결과 데이터프레임
         """
         predictions = []
         last_date = historical_data['date'].max()
+        
+        # 기업별 예측 특성 정의 - 현재 성과 수준에 맞춰 조정
+        company_prediction_traits = {
+            "삼성전자": {"momentum": 0.85, "volatility": 0.08, "improvement_cap": 0.15},  # 우수: 안정적
+            "SK하이닉스": {"momentum": 0.3, "volatility": 0.35, "improvement_cap": 0.6},  # 저성과: 높은 개선 가능성
+            "KB금융그룹": {"momentum": 0.75, "volatility": 0.12, "improvement_cap": 0.3},  # 중상위: 꾸준한 개선
+            "신한금융그룹": {"momentum": 0.85, "volatility": 0.08, "improvement_cap": 0.25},
+            "국민은행": {"momentum": 0.4, "volatility": 0.3, "improvement_cap": 0.35},
+            "LG화학": {"momentum": 0.8, "volatility": 0.2, "improvement_cap": 0.6},
+            "현대자동차": {"momentum": 0.6, "volatility": 0.12, "improvement_cap": 0.4},
+            "포스코": {"momentum": 0.3, "volatility": 0.18, "improvement_cap": 0.5},
+            "네이버": {"momentum": 0.55, "volatility": 0.25, "improvement_cap": 0.4},  # 중간: 변동성 있는 성장
+            "한화그룹": {"momentum": 0.2, "volatility": 0.4, "improvement_cap": 0.3}
+        }
+        
+        traits = company_prediction_traits.get(company_name, {"momentum": 0.5, "volatility": 0.15, "improvement_cap": 0.4})
         
         # 학습 시와 동일한 특성 컬럼 정의
         feature_cols = ['month', 'quarter', 'trend'] + \
@@ -214,7 +443,44 @@ class AIPredictor:
                     # 학습 시와 동일한 순서로 특성 생성
                     X_pred = pd.DataFrame([features])[feature_cols]
                     X_scaled = self.scalers[target].transform(X_pred)
-                    pred_scores[target] = max(0, min(100, self.models[target].predict(X_scaled)[0]))
+                    base_pred = self.models[target].predict(X_scaled)[0]
+                    
+                    # 기업별 특성 적용
+                    last_value = extended_df[target].iloc[-1]
+                    
+                    # 모멘텀 효과 (이전 추세 반영)
+                    if len(extended_df) >= 3:
+                        recent_trend = extended_df[target].tail(3).diff().mean()
+                        momentum_effect = recent_trend * traits['momentum']
+                    else:
+                        momentum_effect = 0
+                    
+                    # 변동성 추가
+                    volatility_effect = np.random.normal(0, traits['volatility'] * 5)
+                    
+                    # 개선 한계 적용 (너무 급격한 개선 방지)
+                    max_improvement = last_value * (1 + traits['improvement_cap'] / 12)
+                    
+                    # 최종 예측값 계산 - 모델 예측과 현재값의 가중 평균
+                    # 초기에는 현재값에 더 가중치를 두고, 점진적으로 모델 예측에 가중치 증가
+                    model_weight = min(0.7, i / periods)  # 최대 70%까지만 모델에 의존
+                    current_weight = 1 - model_weight
+                    
+                    final_pred = (base_pred * model_weight + last_value * current_weight) + momentum_effect + volatility_effect
+                    final_pred = min(final_pred, max_improvement)
+                    
+                    # 기업별 특수 조건
+                    if company_name == "포스코" and i > 6:
+                        # 회복 패턴
+                        final_pred = final_pred * 1.05
+                    elif company_name == "신한금융그룹" and final_pred > 85:
+                        # 고점 정체
+                        final_pred = final_pred * 0.98
+                    elif company_name == "네이버":
+                        # 지속적 혁신
+                        final_pred = final_pred * 1.02
+                    
+                    pred_scores[target] = max(0, min(100, final_pred))
                 else:
                     pred_scores[target] = extended_df[target].iloc[-1]
             

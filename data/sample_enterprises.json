@@ -12,27 +12,27 @@
           "carbon_scope1": 1200,
           "carbon_scope2": 800,
           "carbon_scope3": 15000,
-          "renewable_energy_ratio": 0.35,
+          "renewable_energy_ratio": 0.65,
           "energy_usage_mwh": 25000,
           "water_usage_ton": 150000,
           "waste_recycling_rate": 0.95,
-          "env_certifications": ["ISO 14001", "ISO 50001"]
+          "env_certifications": ["ISO 14001", "ISO 50001", "RE100"]
         },
         "social": {
-          "diversity_ratio": 0.28,
-          "accident_rate": 0.12,
-          "training_hours_per_employee": 52,
-          "customer_satisfaction": 87,
-          "supplier_assessment_ratio": 0.85,
-          "local_hiring_rate": 0.75,
-          "donation_ratio": 0.015
+          "diversity_ratio": 0.42,
+          "accident_rate": 0.05,
+          "training_hours_per_employee": 85,
+          "customer_satisfaction": 92,
+          "supplier_assessment_ratio": 0.95,
+          "local_hiring_rate": 0.85,
+          "donation_ratio": 0.025
         },
         "governance": {
-          "independent_director_ratio": 0.6,
-          "board_diversity_ratio": 0.2,
+          "independent_director_ratio": 0.75,
+          "board_diversity_ratio": 0.35,
           "has_esg_committee": true,
           "ethics_violations": 0,
-          "disclosure_score": 92,
+          "disclosure_score": 96,
           "audit_opinion": "적정"
         },
         "financial": {
@@ -55,30 +55,30 @@
           "established_year": 1983
         },
         "environmental": {
-          "carbon_scope1": 980,
-          "carbon_scope2": 1200,
-          "carbon_scope3": 8000,
-          "renewable_energy_ratio": 0.42,
-          "energy_usage_mwh": 18000,
-          "water_usage_ton": 120000,
-          "waste_recycling_rate": 0.93,
-          "env_certifications": ["ISO 14001", "RE100"]
+          "carbon_scope1": 1500,
+          "carbon_scope2": 1800,
+          "carbon_scope3": 12000,
+          "renewable_energy_ratio": 0.15,
+          "energy_usage_mwh": 22000,
+          "water_usage_ton": 180000,
+          "waste_recycling_rate": 0.75,
+          "env_certifications": ["ISO 14001"]
         },
         "social": {
-          "diversity_ratio": 0.25,
-          "accident_rate": 0.08,
-          "training_hours_per_employee": 64,
-          "customer_satisfaction": 89,
-          "supplier_assessment_ratio": 0.9,
-          "local_hiring_rate": 0.82,
-          "donation_ratio": 0.018
+          "diversity_ratio": 0.18,
+          "accident_rate": 0.25,
+          "training_hours_per_employee": 35,
+          "customer_satisfaction": 78,
+          "supplier_assessment_ratio": 0.65,
+          "local_hiring_rate": 0.68,
+          "donation_ratio": 0.008
         },
         "governance": {
-          "independent_director_ratio": 0.57,
+          "independent_director_ratio": 0.43,
           "board_diversity_ratio": 0.14,
-          "has_esg_committee": true,
-          "ethics_violations": 1,
-          "disclosure_score": 88,
+          "has_esg_committee": false,
+          "ethics_violations": 3,
+          "disclosure_score": 72,
           "audit_opinion": "적정"
         },
         "financial": {
@@ -104,20 +104,20 @@
           "carbon_scope1": 50,
           "carbon_scope2": 150,
           "carbon_scope3": 2000,
-          "renewable_energy_ratio": 0.15,
+          "renewable_energy_ratio": 0.45,
           "energy_usage_mwh": 800,
           "water_usage_ton": 5000,
-          "green_finance_ratio": 0.42,
-          "env_certifications": ["ISO 14001"]
+          "green_finance_ratio": 0.52,
+          "env_certifications": ["ISO 14001", "녹색금융인증"]
         },
         "social": {
-          "diversity_ratio": 0.45,
+          "diversity_ratio": 0.48,
           "accident_rate": 0.02,
-          "training_hours_per_employee": 80,
+          "training_hours_per_employee": 95,
           "customer_satisfaction": 91,
-          "financial_inclusion_score": 85,
+          "financial_inclusion_score": 92,
           "local_hiring_rate": 0.95,
-          "donation_ratio": 0.025
+          "donation_ratio": 0.03
         },
         "governance": {
           "independent_director_ratio": 0.71,
@@ -150,7 +150,7 @@
           "carbon_scope1": 100,
           "carbon_scope2": 300,
           "carbon_scope3": 1500,
-          "renewable_energy_ratio": 0.25,
+          "renewable_energy_ratio": 0.35,
           "energy_usage_mwh": 1200,
           "water_usage_ton": 3000,
           "data_center_pue": 1.2,
@@ -159,18 +159,18 @@
         "social": {
           "diversity_ratio": 0.35,
           "accident_rate": 0.01,
-          "training_hours_per_employee": 96,
-          "customer_satisfaction": 93,
-          "data_privacy_score": 95,
-          "local_hiring_rate": 0.88,
-          "donation_ratio": 0.022
+          "training_hours_per_employee": 75,
+          "customer_satisfaction": 88,
+          "data_privacy_score": 90,
+          "local_hiring_rate": 0.82,
+          "donation_ratio": 0.015
         },
         "governance": {
           "independent_director_ratio": 0.5,
           "board_diversity_ratio": 0.17,
-          "has_esg_committee": false,
-          "ethics_violations": 0,
-          "disclosure_score": 85,
+          "has_esg_committee": true,
+          "ethics_violations": 1,
+          "disclosure_score": 80,
           "audit_opinion": "적정"
         },
         "financial": {
