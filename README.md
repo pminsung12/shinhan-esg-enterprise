@@ -310,4 +310,4 @@ def predict_esg_future(company_name: str, months: int) -> dict:
 
 **Developer**: 박민성  
 **Organization**: 신한은행 ICT 인턴  
-**Period**: 2025.08.02 - 2024.08.10 
+**Period**: 2025.08.02 - 2025.08.10 
